@@ -1,0 +1,15 @@
+PROFILE: TinyBee X Motor Test / TMC2209_STANDALONE / EXTRUDERS=0 / M92 X1
+Retrieving maximum program size .pio\build\mks_tinybee\firmware.elf
+Checking size .pio\build\mks_tinybee\firmware.elf
+Building .pio\build\mks_tinybee\firmware.bin
+esptool.py v3.0
+Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
+RAM:   [=         ]   5.8% (used 18996 bytes from 327680 bytes)
+Flash: [=         ]   8.5% (used 283314 bytes from 3342336 bytes)
+========================= [SUCCESS] Took 44.12 seconds =========================
+
+Environment    Status    Duration
+-------------  --------  ------------
+mks_tinybee    SUCCESS   00:00:44.123
+========================= 1 succeeded in 00:00:44.123 =========================
+ESP32 Flash header: 8 MB. No upload or physical motor movement performed.

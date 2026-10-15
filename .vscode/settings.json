@@ -1,0 +1,17 @@
+{
+  "platformio-ide.useBuiltinPIOCore": true,
+  "C_Cpp.default.configurationProvider": "platformio.platformio-ide",
+  "cmake.configureOnOpen": false,
+  "files.associations": {
+    "*.h": "cpp"
+  },
+  "files.exclude": {
+    "**/.pio": true
+  },
+  "search.exclude": {
+    "**/.pio": true
+  },
+  "terminal.integrated.env.windows": {
+    "PATH": "${env:USERPROFILE}\\.platformio\\penv\\Scripts;${env:PATH}"
+  }
+}
