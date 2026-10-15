@@ -1,14 +1,14 @@
-# TinyBee V1.0 — test bazy ramienia na X
+# TinyBee V1.0 — test ramienia na osiach X/Y/Z
 
-Profil do testu silnika na wyjściu X, ze sterownikiem TMC2209. Użytkownik potwierdził nieograniczony obrót bazy. Pozostałe osie i kinematyka ramienia 4-osiowego wymagają osobnej konfiguracji.
+Profil do testu trzech silników ramienia na wyjściach X, Y i Z ze sterownikami TMC2209. X steruje bazą i może obracać się bez ograniczenia. Y oraz Z należy najpierw sprawdzić krótkim ruchem, gdy mechanika ma bezpieczny zakres.
 
 ## Ustawienia
 
-- X_DRIVER_TYPE = TMC2209_STANDALONE: sterowanie STEP/DIR, bez UART. Prąd ustawia się na module sterownika, mikrokrok zależy od ustawień sprzętowych.
+- X/Y/Z_DRIVER_TYPE = TMC2209_STANDALONE: sterowanie STEP/DIR, bez UART. Prąd ustawia się na module sterownika, mikrokrok zależy od ustawień sprzętowych.
 - EXTRUDERS = 0, czujniki temperatury = 0: bez ekstrudera, grzałek i wymagania podłączenia termistorów.
-- Skala X: **1 jednostka = 1 impuls STEP**, nie stopień ani rzeczywisty milimetr.
-- Maksymalna prędkość 100 impulsów/s, przyspieszenie 100 impulsów/s².
-- Programowe limity minimum/maksimum wyłączone tylko dla X.
+- Skala X/Y/Z: **1 jednostka = 1 stopień obrotu osi**, przy założeniu silnika 1,8°, mikrokroku 1/8 i przełożeniu 9:32.
+- Maksymalna prędkość 30°/s i przyspieszenie 30°/s² dla każdej osi.
+- Programowe limity minimum/maksimum są wyłączone; nie wysyłaj długich ruchów Y/Z przed ustaleniem mechanicznych zakresów.
 - Brak automatycznego zwalniania silników po bezczynności.
 - EEPROM wyłączony, aby stare ustawienia drukarki nie zastępowały testowej skali. M500 nie jest potrzebne; zmiany M92 nie przetrwają restartu.
 - USB 115200, Flash 8 MB, środowisko mks_tinybee.
@@ -33,32 +33,34 @@ Silnik wymaga zasilania wejścia płytki zgodnego z TinyBee (12–24 V); samo US
 
 ## Pierwszy ruch
 
-Najpierw wyślij M115 oraz M503. W M503 sprawdź **X1.00** przy M92. Jeżeli wartość jest inna, sprawdź wgrany profil przed ruchem.
+Najpierw wyślij M115 oraz M503. W M503 sprawdź **X15.80 Y15.80 Z15.80** przy M92. Jeżeli wartości są inne, sprawdź wgrany profil przed ruchem.
 
 Nie wysyłaj G28 — bazowanie i krańcówki nie są skonfigurowane dla ramienia.
 
-Wysyłaj kolejno linie z TEST-X.gcode albo wpisz:
+Najpierw wyślij kolejno linie z `TEST-YZ.gcode`; testuje każdą z nowych osi o 5° w obie strony. Dla X użyj `TEST-X.gcode`.
+
+Przykład ręcznego testu Y:
 
 ```gcode
 G91
-G1 X16 F600
+G1 Y5 F360
 M400
-G1 X-16 F600
+G1 Y-5 F360
 M400
 G90
 ```
 
-To 16 impulsów w jedną stronę i 16 z powrotem, z prędkością do 10 impulsów/s. Przy dużym mikrokroku/przełożeniu ruch może być ledwo widoczny. Po potwierdzeniu działania można zwiększyć liczbę impulsów, np. X160. F6000 odpowiada maksimum 100 impulsów/s.
+To 5° w jedną stronę i 5° z powrotem, z prędkością 6°/s. Po potwierdzeniu działania można zwiększać odległość stopniowo. F1800 odpowiada maksimum 30°/s.
 
-M18 X zwalnia moment trzymający X — użyj dopiero, gdy ramię nie wymaga podtrzymania przez silnik. Test nie zwalnia napędu automatycznie.
+M18 X, M18 Y lub M18 Z zwalnia moment trzymający danej osi — użyj dopiero, gdy ramię nie wymaga podtrzymania przez silnik. Test nie zwalnia napędów automatycznie.
 
 ## Docelowa skala w stopniach
 
-Potrzebne są: kąt pełnego kroku silnika, mikrokrok oraz przełożenie (obroty silnika na obrót bazy).
+Potrzebne są: kąt pełnego kroku silnika, mikrokrok oraz przełożenie (obroty silnika na obrót osi).
 
 impulsy/stopień = (360 / kąt_kroku_silnika) × mikrokrok × przełożenie / 360
 
-Po zmianie M92 X... plik TEST-X.gcode przestaje oznaczać test 16 impulsów. Nie ustawiono zgadywanej skali kątowej.
+Obecna skala 15,80247 kroku/° wynika z: 200 pełnych kroków/obrót × 1/8 × 32/9 ÷ 360. Jeżeli Y lub Z mają inne przełożenie albo ustawienie DIP, zmień wyłącznie ich wartość w M92 i później w `DEFAULT_AXIS_STEPS_PER_UNIT`.
 
 ## Narzędzia i wynik
 

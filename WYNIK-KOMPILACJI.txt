@@ -1,4 +1,4 @@
-PROFILE: TinyBee X Motor Test / TMC2209_STANDALONE / EXTRUDERS=0 / M92 X1
+PROFILE: TinyBee 3-Axis Arm Test / X-Y-Z TMC2209_STANDALONE / EXTRUDERS=0 / M92 X15.80247 Y15.80247 Z15.80247 / max 30 deg/s
 Retrieving maximum program size .pio\build\mks_tinybee\firmware.elf
 Checking size .pio\build\mks_tinybee\firmware.elf
 Building .pio\build\mks_tinybee\firmware.bin
