@@ -143,7 +143,7 @@
 #endif
 
 // Name displayed in the LCD "Ready" message and Info menu
-#define CUSTOM_MACHINE_NAME "TinyBee 3-Axis Arm Test"
+#define CUSTOM_MACHINE_NAME "TinyBee 3-Axis Smooth"
 
 // Printer's unique ID, used by some programs to differentiate between machines.
 // Choose your own or use a service like https://www.uuidgenerator.net/version4
@@ -927,14 +927,14 @@
  * Override with M92
  *                                      X, Y, Z [, I [, J [, K]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 15.80247, 15.80247, 15.80247 }  // X/Y/Z: degrees; 1.8° motor, 1/8, 9T:32T gearing.
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 126.41975, 126.41975, 126.41975 }  // X/Y/Z: degrees; 1.8° motor, 1/64, 9T:32T gearing.
 
 /**
  * Default Max Feed Rate (mm/s)
  * Override with M203
  *                                      X, Y, Z [, I [, J [, K]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 30, 30, 30 }  // X/Y/Z in degrees/s; about 474 STEP pulses/s at the configured scale.
+#define DEFAULT_MAX_FEEDRATE          { 30, 30, 30 }  // X/Y/Z in degrees/s; about 3793 STEP pulses/s at the configured scale.
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
@@ -947,7 +947,7 @@
  * Override with M201
  *                                      X, Y, Z [, I [, J [, K]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 30, 30, 30 }
+#define DEFAULT_MAX_ACCELERATION      { 15, 15, 15 }
 
 //#define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
@@ -962,9 +962,9 @@
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-#define DEFAULT_ACCELERATION          30     // X/Y/Z degrees/s^2
+#define DEFAULT_ACCELERATION          15     // X/Y/Z degrees/s^2: gentler starts and stops for the arm.
 #define DEFAULT_RETRACT_ACCELERATION  500    // E acceleration for retracts
-#define DEFAULT_TRAVEL_ACCELERATION   30     // X/Y/Z degrees/s^2
+#define DEFAULT_TRAVEL_ACCELERATION   15     // X/Y/Z degrees/s^2: gentler starts and stops for the arm.
 
 /**
  * Default Jerk limits (mm/s)

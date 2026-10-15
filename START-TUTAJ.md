@@ -1,13 +1,14 @@
 # TinyBee V1.0 — test ramienia na osiach X/Y/Z
 
-Profil do testu trzech silników ramienia na wyjściach X, Y i Z ze sterownikami TMC2209. X steruje bazą i może obracać się bez ograniczenia. Y oraz Z należy najpierw sprawdzić krótkim ruchem, gdy mechanika ma bezpieczny zakres.
+Profil do płynnego ruchu trzech silników ramienia na wyjściach X, Y i Z ze sterownikami TMC2209. X steruje bazą i może obracać się bez ograniczenia. Y oraz Z należy najpierw sprawdzić krótkim ruchem, gdy mechanika ma bezpieczny zakres.
 
 ## Ustawienia
 
 - X/Y/Z_DRIVER_TYPE = TMC2209_STANDALONE: sterowanie STEP/DIR, bez UART. Prąd ustawia się na module sterownika, mikrokrok zależy od ustawień sprzętowych.
 - EXTRUDERS = 0, czujniki temperatury = 0: bez ekstrudera, grzałek i wymagania podłączenia termistorów.
-- Skala X/Y/Z: **1 jednostka = 1 stopień obrotu osi**, przy założeniu silnika 1,8°, mikrokroku 1/8 i przełożeniu 9:32.
-- Maksymalna prędkość 30°/s i przyspieszenie 30°/s² dla każdej osi.
+- Ustaw DIP: **MS1 OFF, MS2 ON, MS3 OFF** na każdym używanym TMC2209. To wybiera 1/64 mikrokroku na TinyBee i zmniejsza widoczność pojedynczych kroków.
+- Skala X/Y/Z: **1 jednostka = 1 stopień obrotu osi**, przy założeniu silnika 1,8°, mikrokroku 1/64 i przełożeniu 9:32.
+- Maksymalna prędkość 30°/s i przyspieszenie 15°/s² dla każdej osi, dla łagodniejszego startu i zatrzymania.
 - Programowe limity minimum/maksimum są wyłączone; nie wysyłaj długich ruchów Y/Z przed ustaleniem mechanicznych zakresów.
 - Brak automatycznego zwalniania silników po bezczynności.
 - EEPROM wyłączony, aby stare ustawienia drukarki nie zastępowały testowej skali. M500 nie jest potrzebne; zmiany M92 nie przetrwają restartu.
@@ -29,11 +30,11 @@ nie dotyczą środowiska `mks_tinybee` i nie blokują kompilacji ani wgrywania.
 
 Wykryta płytka używa portu COM3, który ustawiono jako upload_port i monitor_port. Zamknij monitor przed wgrywaniem.
 
-Silnik wymaga zasilania wejścia płytki zgodnego z TinyBee (12–24 V); samo USB nie zasila napędu. Przed ruchem ustaw ograniczenie prądu TMC2209 odpowiednio do silnika i konkretnego modułu. Silnik i sterownik przepinaj przy odłączonym zasilaniu.
+Silnik wymaga zasilania wejścia płytki zgodnego z TinyBee (12–24 V); samo USB nie zasila napędu. Przed zmianą DIP całkowicie odłącz zasilanie płytki. Przed ruchem ustaw ograniczenie prądu TMC2209 odpowiednio do silnika i konkretnego modułu. Silnik i sterownik przepinaj przy odłączonym zasilaniu.
 
 ## Pierwszy ruch
 
-Najpierw wyślij M115 oraz M503. W M503 sprawdź **X15.80 Y15.80 Z15.80** przy M92. Jeżeli wartości są inne, sprawdź wgrany profil przed ruchem.
+Najpierw wyślij M115 oraz M503. W M503 sprawdź **X126.42 Y126.42 Z126.42** przy M92. Jeżeli wartości są inne, sprawdź wgrany profil przed ruchem.
 
 Nie wysyłaj G28 — bazowanie i krańcówki nie są skonfigurowane dla ramienia.
 
@@ -60,7 +61,7 @@ Potrzebne są: kąt pełnego kroku silnika, mikrokrok oraz przełożenie (obroty
 
 impulsy/stopień = (360 / kąt_kroku_silnika) × mikrokrok × przełożenie / 360
 
-Obecna skala 15,80247 kroku/° wynika z: 200 pełnych kroków/obrót × 1/8 × 32/9 ÷ 360. Jeżeli Y lub Z mają inne przełożenie albo ustawienie DIP, zmień wyłącznie ich wartość w M92 i później w `DEFAULT_AXIS_STEPS_PER_UNIT`.
+Obecna skala 126,41975 kroku/° wynika z: 200 pełnych kroków/obrót × 1/64 × 32/9 ÷ 360. Jeżeli Y lub Z mają inne przełożenie albo ustawienie DIP, zmień wyłącznie ich wartość w M92 i później w `DEFAULT_AXIS_STEPS_PER_UNIT`.
 
 ## Narzędzia i wynik
 
