@@ -30,6 +30,26 @@ python gui.py
 The GUI has port selection, base jog (±1/10/45/90°), go-to-angle, speed, set-zero (G92 X0),
 motors on/off, M114 position, a console, a G-code file runner, and **STOP**.
 
+### Xbox controller
+
+Connect the controller by USB or Bluetooth before or after opening the GUI. The panel
+shows its name when it's detected. `pygame` is required; without it the GUI works as before.
+
+| Input | Action |
+|---|---|
+| Left stick ←/→ | rotate base; speed follows how far you push (max = Speed box) |
+| D-pad ←/→ | −1° / +1° |
+| LB / RB | −10° / +10° |
+| A | go to 0° |
+| X | set current position as 0° (G92 X0) |
+| Y | read position (M114) |
+| Menu | motors on (M17) |
+| **B** | **STOP** (resets the board, same as the red button) |
+
+Stick moves are sent as short 0.1 s segments, paced in real time, so only a fraction of a
+second of motion is queued at once. With the firmware's low acceleration (30°/s²), the
+base still needs up to ~15° to stop from full speed (30°/s).
+
 Command line:
 
 ```
